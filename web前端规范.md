@@ -1,0 +1,87 @@
+# web前端代码规范
+
+## 文件命名
+命名规则：以开发的模块的名称的英文为文件夹，模块内合功能命名以 模块名称-功能名称，注意不能出现拼音。示例如下：  
+交易模块名称：  
+ \>trade  
+    \>>trade-place-order  
+        \>>>trade-place-order-limit.vue  
+        \>>>trade-place-order-market.vue  
+    \>>trade-dish  
+        \>>>trade-dish.vue  
+    \>>trade-order-list  
+        \>>>trade-order-list-position.vue  
+        \>>>trade-order-list-entrust.vue
+>推荐一个变量命名网站：[codelf]( https://unbug.github.io/codelf/)
+
+## CSS相关
+
+#### 一、class类名命名
+>class类名命名规则同[文件命名](#文件命名)，不能出现重复命名
+
+#### 二、样式规则
+
+1、字体、文字大小、颜色、边框、圆角、阴影、页边距、行距等相关样式统一处理类名或代码块，页面内不能出现；  
+2、禁止添加内联样式，js操作dom时所需样式变动尽量通过改变class名实现；  
+3、模块内只能写本模块样式，不能出现全局样式，如需添加全局样式统一全局样式相关文件内处理；
+
+## JS相关
+
+1、添加注释，注释内容需通俗易懂；  
+2、避免代码重复，对重复代码进行封装优化。适当情况可在共用代码库内添加封装函数，公共代码库内不允许出现全局变量，统一以传参的方式接收函数体内变量；  
+3、避免逻辑混乱；  
+4、引用第三方插件时，需要验证其兼容性，检查插件依赖，防止引入过多多余依赖。引入插件后要检查打包后的文件大小变化，防止体积剧增；  
+5、尽量减少forEach和map等同步API的使用，避免影响页面加载；  
+6、dom操作尽量用原生JS处理，避免过多JS库引入；  
+7、减少接口调用频次，避免多次重复调用，尽量需要时仔调用；  
+8、禁止直接对接口返回的数据进行变更，处理数据时应先深拷贝出新的变量在进行数据处理示例如下：
+``` js
+// 接口返回的数据
+const reqMsg = [
+        {
+            Sym: "BTC.USDT",
+            Qty: 1000,
+            Dir: 1,
+            At: 1590480376264
+        },
+        {
+            Sym: "BTC.USDT",
+            Qty: 1000,
+            Dir: 1,
+            At: 1590480376264
+        },
+        {
+            Sym: "BTC.USDT",
+            Qty: 1000,
+            Dir: 1,
+            At: 1590480376264
+        },
+        {
+            Sym: "BTC.USDT",
+            Qty: 1000,
+            Dir: 1,
+            At: 1590480376264
+        }
+    ]
+
+const copyTab = function(a,b){
+    for(let key in b){
+        a[key] = b[key]
+    }
+}
+
+let data = []
+// 循环进行深拷贝，并对数据进行处理
+for(let item of reqMsg){
+    let obj = {};
+    // 普通赋值属于浅拷贝，所以要对对象的每一个变量进行拷贝
+    copyTab(obj, item)
+
+    // 下边对拷贝好的数据进行数据处理，数据处理时尽量保留愿数据
+    obj.AtStr = new Date(obj.At).format("hh:mm:ss")
+    data.push(obj)
+}
+
+```
+
+
