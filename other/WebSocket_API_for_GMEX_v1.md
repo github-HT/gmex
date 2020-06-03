@@ -476,7 +476,7 @@ type V2AssetCfg struct {
  * }
  *
  * token登录生成签名的方法:
- * 公式: md5(Req+rid+Args+Expires+API.SecretKey)
+ * 公式: md5(Req+rid+Args+Expires)
  * 例:
  *  UserName: "example@gaea.com",
  *  UserCred: "mVAAADjNHzhvehaEvU$BMJoU7BZk"
